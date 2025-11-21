@@ -37,12 +37,12 @@
 <body>
 
     <div class="page-header d-flex justify-content-between align-items-center">
-        <h3 class="m-0 text-secondary"><i class="fa-solid fa-user-doctor"></i> Bác sĩ: <b>${sessionScope.acc.fullName}</b></h3> <a href="${pageContext.request.contextPath}/login" class="btn btn-outline-danger btn-sm">Đăng xuất</a>
+        <h3 class="m-0 text-secondary"><i class="fa-solid fa-user-doctor"></i> Doctor: <b>${sessionScope.acc.fullName}</b></h3> <a href="${pageContext.request.contextPath}/login" class="btn btn-outline-danger btn-sm">Đăng xuất</a>
     </div>
 
     <div class="container">
         <div class="table-card">
-            <h2 class="mb-4 text-center" style="color: #2c3e50;">Danh sách bệnh nhân đặt lịch</h2>
+            <h2 class="mb-4 text-center" style="color: #2c3e50;">Client List</h2>
             
             <div class="table-responsive">
                 <table class="table table-hover table-bordered"> <thead>
