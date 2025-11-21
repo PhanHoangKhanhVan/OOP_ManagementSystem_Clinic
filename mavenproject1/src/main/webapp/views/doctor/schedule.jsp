@@ -2,10 +2,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Doctor's work schedule</title>
+    <title>Doctor's Work Schedule</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -37,50 +37,78 @@
 <body>
 
     <div class="page-header d-flex justify-content-between align-items-center">
-        <h3 class="m-0 text-secondary"><i class="fa-solid fa-user-doctor"></i> Doctor: <b>${sessionScope.acc.fullName}</b></h3> <a href="${pageContext.request.contextPath}/login" class="btn btn-outline-danger btn-sm">Đăng xuất</a>
+        <h3 class="m-0 text-secondary">
+            <i class="fa-solid fa-user-doctor"></i> Doctor: <b>${sessionScope.acc.fullName}</b>
+        </h3> 
+        <a href="${pageContext.request.contextPath}/login" class="btn btn-outline-danger btn-sm">Logout</a>
     </div>
 
     <div class="container">
         <div class="table-card">
-            <h2 class="mb-4 text-center" style="color: #2c3e50;">Client List</h2>
+            <h2 class="mb-4 text-center" style="color: #2c3e50;">Appointment List</h2>
             
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered"> <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Client Name</th>
-                            <th>Services</th>
-                            <th>Appointment</th>
-                            <th>State</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${listA}" var="app">
-                            <tr>
-                                <td>#${app.id}</td>
-                                <td class="fw-bold">${app.customerName}</td>
-                                <td><span class="badge bg-info text-dark">${app.serviceName}</span></td>
-                                <td>${app.bookingDate}</td>
-                                <td>
-                                    <span class="status-badge ${app.status == 'Pending' ? 'status-Pending' : 'status-Approved'}">
-                                        ${app.status}
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="prescribe.jsp?id=${app.id}" class="btn btn-primary btn-sm shadow-sm">
-                                        <i class="fa-solid fa-prescription"></i> Prescription
-                                    </a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </div>
+            <c:choose>
+                
+                <%Case 1: No appointment %>
+                <c:when test="${empty listA}">
+                    <div class="alert alert-warning text-center p-4">
+                        <i class="fa-regular fa-calendar-xmark fa-2x mb-2"></i><br>
+                        <strong>There is no appointment yet.</strong>
+                    </div>
+                </c:when>
+                
+                <%Case 2%>
+                <c:otherwise>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered align-middle"> 
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client Name</th>
+                                    <th>Services</th>
+                                    <th>Appointment</th>
+                                    <th>State</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr> <% database %>
+                                    <td>#999</td>
+                                    <td class="fw-bold">Nguyen Van B</td>
+                                    <td><span class="badge bg-warning text-dark">Medical Check-up</span></td>
+                                    <td>2025-11-25 09:00</td>
+                                    <td><span class="badge bg-success">Confirmed</span></td>
+                                    <td>
+                                        <a href="prescribe.jsp?id=999" class="btn btn-primary btn-sm shadow-sm">
+                                            <i class="fa-solid fa-prescription"></i> Prescribe
+                                        </a>
+                                    </td>
+                                </tr>
+                                <c:forEach items="${listA}" var="app">
+                                    <tr>
+                                        <td>#${app.id}</td>
+                                        <td class="fw-bold">${app.customerName}</td>
+                                        <td><span class="badge bg-info text-dark">${app.serviceName}</span></td>
+                                        <td>${app.bookingDate}</td>
+                                        <td>
+                                            <span class="status-badge ${app.status == 'Pending' ? 'status-Pending' : 'status-Approved'}">
+                                                ${app.status}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="prescribe.jsp?id=${app.id}" class="btn btn-primary btn-sm shadow-sm">
+                                                <i class="fa-solid fa-prescription"></i> Prescribe
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </c:otherwise>
+                
+            </c:choose>
             
-            <c:if test="${empty listA}">
-                <div class="alert alert-warning text-center">There is no appointment yet.</div>
-            </c:if>
         </div>
     </div>
 
