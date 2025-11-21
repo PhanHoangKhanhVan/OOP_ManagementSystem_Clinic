@@ -26,25 +26,25 @@
         <div class="form-container">
             <div class="text-center mb-4">
                 <h2 class="fw-bold" style="color: #2c3e50;">Prescription Form</h2>
-                <p class="text-muted">Mã lịch hẹn: <span class="badge bg-secondary">#${param.id}</span></p>
+                <p class="text-muted">Appointment ID: <span class="badge bg-secondary">#${param.id}</span></p>
             </div>
 
             <form action="${pageContext.request.contextPath}/doctor/prescribe" method="post">
                 <input type="hidden" name="app_id" value="${param.id}">
                 
                 <div class="mb-3">
-                    <label class="form-label fw-bold"><i class="fa-solid fa-stethoscope"></i> Chẩn đoán bệnh:</label>
-                    <textarea name="diagnosis" class="form-control" placeholder="Nhập chẩn đoán của bác sĩ..." required></textarea>
+                    <label class="form-label fw-bold"><i class="fa-solid fa-stethoscope"></i> Diagnosis of disease:</label>
+                    <textarea name="diagnosis" class="form-control" placeholder="Enter doctor's diagnosis..." required></textarea>
                 </div>
                 
                 <div class="mb-4">
-                    <label class="form-label fw-bold"><i class="fa-solid fa-pills"></i> Thuốc & Liều lượng:</label> <textarea name="medicine" class="form-control" placeholder="Nhập tên thuốc và cách dùng..." required></textarea>
+                    <label class="form-label fw-bold"><i class="fa-solid fa-pills"></i> Medication & Dosage:</label> <textarea name="medicine" class="form-control" placeholder="Enter the drug name and how to use it..." required></textarea>
                 </div>
                 
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary btn-lg" style="background-color: #26c6da; border: none;"> <i class="fa-solid fa-save"></i> Lưu đơn thuốc
+                    <button type="submit" class="btn btn-primary btn-lg" style="background-color: #26c6da; border: none;"> <i class="fa-solid fa-save"></i> Save prescription
                     </button>
-                    <a href="schedule.jsp" class="btn btn-light text-secondary">Quay lại danh sách</a>
+                    <a href="schedule.jsp" class="btn btn-light text-secondary">Back to the list</a>
                 </div>
             </form>
         </div>
