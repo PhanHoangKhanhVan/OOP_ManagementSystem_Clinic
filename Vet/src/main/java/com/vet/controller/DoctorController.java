@@ -2,7 +2,7 @@ package com.vet.controller;
 
 import com.vet.dao.AppointmentDAO;
 import com.vet.model.Appointment;
-import com.vet.model.Person; // Để check quyền
+import com.vet.model.Person;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -19,24 +19,24 @@ public class DoctorController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 1. Bảo mật: Kiểm tra xem có phải Doctor đang đăng nhập không?
+        // Ktra role Doctor
         HttpSession session = request.getSession();
         Person acc = (Person) session.getAttribute("acc");
         
         if (acc == null || !acc.getRole().equalsIgnoreCase("DOCTOR")) {
-            // Nếu không phải bác sĩ -> Đuổi về trang Login
+            // Nếu không phải bác sĩ -> về trang login
             response.sendRedirect("../login"); 
             return;
         }
 
-        // 2. Gọi DAO lấy dữ liệu
+        // gọi DAO lấy dữ liệu
         AppointmentDAO dao = new AppointmentDAO();
         List<Appointment> list = dao.getAllAppointments();
 
-        // 3. Gửi dữ liệu sang JSP
-        request.setAttribute("listA", list); // Đặt tên biến là listA
+        // gửi dữ liệu sang JSP
+        request.setAttribute("listA", list); 
         
-        // 4. Chuyển trang
+        // chuyển trang
         request.getRequestDispatcher("/views/doctor/schedule.jsp").forward(request, response);
     }
 }

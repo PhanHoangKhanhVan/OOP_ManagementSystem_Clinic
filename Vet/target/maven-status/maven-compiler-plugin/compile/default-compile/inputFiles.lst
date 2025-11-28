@@ -3,7 +3,10 @@ E:\OOP Project\Vet\src\main\java\com\vet\controller\BookingController.java
 E:\OOP Project\Vet\src\main\java\com\vet\controller\ClientHistoryController.java
 E:\OOP Project\Vet\src\main\java\com\vet\controller\DoctorController.java
 E:\OOP Project\Vet\src\main\java\com\vet\controller\LoginServlet.java
+E:\OOP Project\Vet\src\main\java\com\vet\controller\PageController.java
 E:\OOP Project\Vet\src\main\java\com\vet\controller\PrescriptionController.java
+E:\OOP Project\Vet\src\main\java\com\vet\controller\ProfileController.java
+E:\OOP Project\Vet\src\main\java\com\vet\controller\RegisterServlet.java
 E:\OOP Project\Vet\src\main\java\com\vet\dao\AppointmentDAO.java
 E:\OOP Project\Vet\src\main\java\com\vet\dao\UserDAO.java
 E:\OOP Project\Vet\src\main\java\com\vet\model\Appointment.java

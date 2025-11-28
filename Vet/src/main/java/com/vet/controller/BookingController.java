@@ -3,7 +3,6 @@ package com.vet.controller;
 import com.vet.dao.AppointmentDAO;
 import com.vet.model.Person;
 import java.io.IOException;
-import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,47 +13,47 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "BookingController", urlPatterns = {"/client/booking"})
 public class BookingController extends HttpServlet {
 
-    // 1. Mở form đặt lịch
+    // mở Booking
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Chuyển hướng đến file giao diện form
         request.getRequestDispatcher("/views/client/booking.jsp").forward(request, response);
     }
 
-    // 2. Xử lý khi bấm nút "Đặt lịch ngay"
+    // xử lý khi bấm nút confirm
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         request.setCharacterEncoding("UTF-8");
         
-        // A. Lấy thông tin người đang đăng nhập (để biết ai đặt)
+        // lấy thông tin client
         HttpSession session = request.getSession();
         Person acc = (Person) session.getAttribute("acc");
         
+        // yêu cầu login
         if (acc == null) {
-            response.sendRedirect("../login"); // Chưa đăng nhập thì đuổi về login
+            response.sendRedirect("../login"); 
             return;
         }
 
-        // B. Lấy dữ liệu từ form
+        // Lấy thông tin từ booking-form
         String service = request.getParameter("service");
-        String dateStr = request.getParameter("date");
+        String date = request.getParameter("date");   
+        String time = request.getParameter("time");   
+        String petName = request.getParameter("petName");
+        String note = request.getParameter("note");
         
-        // C. Gọi DAO lưu vào Database
+        // gọi DAO lưu vào Database
         AppointmentDAO dao = new AppointmentDAO();
         try {
-            Date sqlDate = Date.valueOf(dateStr); // Chuyển chuỗi ngày sang SQL Date
-            
-            boolean check = dao.insertAppointment(acc.getId(), service, sqlDate);
+            boolean check = dao.insertAppointment(acc.getId(), service, date, time, petName, note);
             
             if (check) {
-                // Đặt thành công -> Chuyển về trang chủ hoặc trang thông báo
-                request.setAttribute("mess", "Đặt lịch thành công! Vui lòng chờ xác nhận.");
-                request.getRequestDispatcher("/views/client/booking.jsp").forward(request, response);
+                // Dùng sendRedirect để tránh bị gửi lại form khi F5 (PRG Pattern)
+                response.sendRedirect("history");
             } else {
-                response.getWriter().print("Lỗi: Không thể lưu vào Database.");
+                response.getWriter().print("Lỗi: Cannot store in Database.");
             }
             
         } catch (Exception e) {

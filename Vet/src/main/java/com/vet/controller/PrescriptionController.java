@@ -13,14 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "PrescriptionController", urlPatterns = {"/doctor/prescribe"})
 public class PrescriptionController extends HttpServlet {
 
-    // 1. Khi bấm link "Kê đơn" -> Hiện ra form (prescribe.jsp)
+    // Khi bấm link "Kê đơn" -> Hiện ra form (prescribe.jsp)
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("/views/doctor/prescribe.jsp").forward(request, response);
     }
 
-    // 2. Khi bấm nút "Lưu đơn thuốc" -> Lưu vào Database
+    // Khi bấm nút "Lưu đơn thuốc" -> Lưu vào Database
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

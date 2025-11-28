@@ -5,93 +5,144 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Hệ Thống Quản Lý Thú Y</title>
+    <title>Trang chủ - The Simpson Clinic</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        .hero-section { background: linear-gradient(to right, #00c6ff, #0072ff); color: white; padding: 50px 0; margin-bottom: 30px; }
-        .feature-card { transition: transform 0.3s; cursor: pointer; }
-        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        /* Gradient nền xanh ngọc nhẹ nhàng đồng bộ với Profile/Login */
+        .hero-section { 
+            background: linear-gradient(135deg, #e0f7fa 0%, #80deea 100%); 
+            padding: 80px 0; 
+            margin-bottom: 40px; 
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+        .feature-card { 
+            border: none;
+            border-radius: 20px;
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            /* height: 100%;  <-- Class h-100 của Bootstrap sẽ lo việc này */
+        }
+        .feature-card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: 0 15px 30px rgba(38, 198, 218, 0.2); 
+            border: 1px solid #26c6da;
+        }
+        .icon-circle {
+            width: 80px; height: 80px;
+            background-color: #e0f7fa;
+            color: #00acc1;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px auto;
+            font-size: 2rem;
+        }
     </style>
 </head>
 <body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#"><i class="fa-solid fa-paw"></i> VetManager</a>
-            <div class="d-flex text-white align-items-center">
-                <c:if test="${sessionScope.acc != null}">
-                    <span class="me-3">Xin chào, <b>${sessionScope.acc.fullName}</b> (${sessionScope.acc.role})</span>
-                    <a href="login" class="btn btn-outline-light btn-sm">Đăng xuất</a>
-                </c:if>
-                <c:if test="${sessionScope.acc == null}">
-                    <a href="views/auth/login.jsp" class="btn btn-primary btn-sm">Đăng nhập</a>
-                </c:if>
-            </div>
-        </div>
-    </nav>
+    <jsp:include page="components/navbar.jsp" />
 
     <div class="hero-section text-center">
         <div class="container">
-            <h1 class="display-4 fw-bold">Chào mừng đến với Vet Clinic</h1>
-            <p class="lead">Hệ thống chăm sóc sức khỏe thú cưng hàng đầu.</p>
-        </div>
-    </div>
-
-    
-
-[Image of Bootstrap Grid System layout]
-
-    <div class="container">
-        <div class="row g-4">
+            <h1 class="display-4 fw-bold" style="color: #006064;">Welcome to The Simpson Clinic</h1>
+            <p class="lead text-secondary">Hệ thống chăm sóc sức khỏe thú cưng hàng đầu.</p>
             
-            <c:if test="${sessionScope.acc.role == 'CLIENT'}">
-                <div class="col-md-6">
-                    <div class="card feature-card h-100 border-primary">
-                        <div class="card-body text-center">
-                            <i class="fa-solid fa-calendar-plus fa-3x text-primary mb-3"></i>
-                            <h3 class="card-title">Đặt Lịch Khám</h3>
-                            <p class="card-text">Chọn dịch vụ và đặt lịch hẹn nhanh chóng.</p>
-                            <a href="${pageContext.request.contextPath}/client/booking" class="btn btn-primary">Đặt ngay</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card feature-card h-100 border-success">
-                        <div class="card-body text-center">
-                            <i class="fa-solid fa-clock-rotate-left fa-3x text-success mb-3"></i>
-                            <h3 class="card-title">Lịch Sử Khám</h3>
-                            <p class="card-text">Xem lại hồ sơ bệnh án và đơn thuốc.</p>
-                            <a href="${pageContext.request.contextPath}/client/history" class="btn btn-success">Xem hồ sơ</a>
-                        </div>
-                    </div>
-                </div>
-            </c:if>
-
-            <c:if test="${sessionScope.acc.role == 'DOCTOR'}">
-                <div class="col-md-12">
-                    <div class="card feature-card h-100 border-danger">
-                        <div class="card-body text-center">
-                            <i class="fa-solid fa-user-doctor fa-3x text-danger mb-3"></i>
-                            <h3 class="card-title">Lịch Làm Việc</h3>
-                            <p class="card-text">Quản lý danh sách bệnh nhân và kê đơn thuốc.</p>
-                            <a href="${pageContext.request.contextPath}/doctor/schedule" class="btn btn-danger btn-lg">Vào trang quản lý</a>
-                        </div>
-                    </div>
-                </div>
-            </c:if>
-
             <c:if test="${sessionScope.acc == null}">
-                <div class="col-12 text-center mt-5">
-                    <h3>Vui lòng đăng nhập để sử dụng dịch vụ</h3>
+                <div class="mt-4">
+                    <a href="views/auth/login.jsp" class="btn btn-info text-white btn-lg rounded-pill px-5 shadow-sm fw-bold">Đăng nhập ngay</a>
+                    <a href="views/auth/register.jsp" class="btn btn-outline-info btn-lg rounded-pill px-5 ms-2 fw-bold">Đăng ký</a>
                 </div>
             </c:if>
-
         </div>
     </div>
 
-    <footer class="text-center mt-5 py-4 text-muted">
-        &copy; 2023 Vet Management System. Built with Java & Bootstrap 5.
+    <div class="container pb-5">
+        
+        <c:if test="${sessionScope.acc.role == 'CLIENT'}">
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-5 d-flex align-items-stretch"> <div class="card feature-card p-4 text-center w-100 h-100 d-flex flex-column"> <div class="icon-circle">
+                            <i class="fa-solid fa-calendar-plus"></i>
+                        </div>
+                        <h3 class="card-title fw-bold text-dark">Đặt Lịch Khám</h3>
+                        <p class="text-muted flex-grow-1">Chọn dịch vụ, bác sĩ và thời gian phù hợp nhất cho thú cưng của bạn.</p>
+                        
+                        <div class="mt-3">
+                            <a href="${pageContext.request.contextPath}/client/booking" class="btn btn-info text-white rounded-pill px-4 fw-bold w-100">Đặt ngay</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5 d-flex align-items-stretch">
+                    <div class="card feature-card p-4 text-center w-100 h-100 d-flex flex-column">
+                        <div class="icon-circle" style="background-color: #e8f5e9; color: #2e7d32;">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <h3 class="card-title fw-bold text-dark">Hồ Sơ Bệnh Án</h3>
+                        <p class="text-muted flex-grow-1">Xem lại lịch sử khám, đơn thuốc và lời dặn dò của bác sĩ.</p>
+                        
+                        <div class="mt-3">
+                            <a href="${pageContext.request.contextPath}/client/history" class="btn btn-success rounded-pill px-4 fw-bold w-100">Xem hồ sơ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
+        <c:if test="${sessionScope.acc.role == 'DOCTOR'}">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card feature-card p-5 text-center border-info">
+                        <div class="icon-circle" style="background-color: #ffebee; color: #c62828;">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        <h2 class="fw-bold text-dark">Trang Quản Lý Bác Sĩ</h2>
+                        <p class="lead text-muted">Xin chào bác sĩ <b>${sessionScope.acc.fullName}</b>. Chúc bạn một ngày làm việc hiệu quả.</p>
+                        <hr>
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <a href="${pageContext.request.contextPath}/doctor/schedule" class="btn btn-danger btn-lg rounded-pill px-5 shadow-sm">
+                                <i class="fa-solid fa-clipboard-list me-2"></i> Xem Lịch Khám
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
+        <c:if test="${sessionScope.acc == null}">
+            <div class="row text-center mt-5">
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <i class="fa-solid fa-user-nurse fa-3x text-info mb-3"></i>
+                        <h5>Đội ngũ chuyên nghiệp</h5>
+                        <p class="text-muted small">Bác sĩ thú y giàu kinh nghiệm, tận tâm.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <i class="fa-solid fa-microscope fa-3x text-info mb-3"></i>
+                        <h5>Trang thiết bị hiện đại</h5>
+                        <p class="text-muted small">Máy móc xét nghiệm, siêu âm tiên tiến.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <i class="fa-solid fa-heart-pulse fa-3x text-info mb-3"></i>
+                        <h5>Chăm sóc 24/7</h5>
+                        <p class="text-muted small">Luôn sẵn sàng khi thú cưng cần cấp cứu.</p>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
+    </div>
+
+    <footer class="text-center mt-5 py-4 text-secondary border-top bg-white">
+        <small>&copy; 2023 The Simpson Clinic. Built with Java Servlet & Bootstrap 5.</small>
     </footer>
 
 </body>

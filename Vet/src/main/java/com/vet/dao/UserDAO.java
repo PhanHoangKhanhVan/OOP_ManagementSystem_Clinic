@@ -12,12 +12,12 @@ public class UserDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    // Hàm login trả về Person (Tính đa hình - Polymorphism)
+    //Login
     public Person login(String username, String password) {
         String query = "SELECT * FROM Users WHERE username = ? AND password = ?";
         
         try {
-            conn = new DBContext().getConnection(); // Mở kết nối
+            conn = new DBContext().getConnection();
             ps = conn.prepareStatement(query);
             ps.setString(1, username);
             ps.setString(2, password);
@@ -25,67 +25,129 @@ public class UserDAO {
 
             if (rs.next()) {
                 String role = rs.getString("role");
-                
-                // 1. Lấy dữ liệu chung của Person
                 int id = rs.getInt("user_id");
                 String fullName = rs.getString("full_name");
-                String phone = rs.getString("phone");
-                String email = rs.getString("email");
                 
-                // 2. Dựa vào Role để tạo đúng Object con (OOP)
+                //Poly
                 if (role.equalsIgnoreCase("CLIENT")) {
-                    Customer c = new Customer();
-                    c.setId(id); 
-                    c.setFullName(fullName);
-                    c.setUsername(username);
-                    c.setAddress(rs.getString("address")); // Thuộc tính riêng của Client
-                    c.setRole("CLIENT");
-                    return c;
+                    return new Customer( //tạo client
+                        id, 
+                        fullName, 
+                        rs.getString("phone"), 
+                        rs.getString("email"), 
+                        username, 
+                        password, 
+                        rs.getString("address")
+                    );
                 } 
                 else if (role.equalsIgnoreCase("DOCTOR")) {
-                    Doctor d = new Doctor();
-                    d.setId(id);
-                    d.setFullName(fullName);
-                    d.setUsername(username);
-                    d.setSalary(rs.getDouble("salary"));         // Thuộc tính của Employee
-                    d.setSpecialization(rs.getString("specialization")); // Thuộc tính riêng Doctor
-                    d.setRole("DOCTOR");
-                    return d;
+                    return new Doctor( //tạo doctor
+                        id, 
+                        fullName, 
+                        rs.getString("phone"), 
+                        rs.getString("email"), 
+                        username, 
+                        password, 
+                        rs.getDouble("salary"), 
+                        null, // kh dùng hiredate
+                        rs.getString("specialization")
+                    );
                 } 
-                else if (role.equalsIgnoreCase("STAFF")) {
-                    Staff s = new Staff();
-                    s.setId(id);
-                    s.setFullName(fullName);
-                    s.setUsername(username);
-                    s.setSalary(rs.getDouble("salary"));
-                    s.setJobTitle(rs.getString("job_title")); // Thuộc tính riêng Staff
-                    s.setRole("STAFF");
-                    return s;
-                }
+                /*else if (role.equalsIgnoreCase("STAFF")) {
+                    return new Staff(
+                        id, 
+                        fullName, 
+                        rs.getString("phone"), 
+                        rs.getString("email"), 
+                        username, 
+                        password, 
+                        rs.getDouble("salary"), 
+                        null, // hireDate
+                        rs.getString("job_title")
+                    );
+                } */
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // Trả về null nếu không tìm thấy user hoặc sai pass
+        return null; 
     }
     
-    // Hàm main để test thử ngay tại đây (Không cần giao diện)
+    //Ktra tài khoản
+    public boolean checkUsername(String username) {
+        String query = "SELECT username FROM Users WHERE username = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                return true; 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false; 
+    }
+
+    // register
+    public void signup(String user, String pass, String fullName, String phone, String email, String address) {
+        String query = "INSERT INTO Users (username, password, full_name, phone, email, address, role) "
+                     + "VALUES (?, ?, ?, ?, ?, ?, 'CLIENT')";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, user);
+            ps.setString(2, pass);
+            ps.setString(3, fullName);
+            ps.setString(4, phone);
+            ps.setString(5, email);
+            ps.setString(6, address);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    //Update profile
+    public void updateUser(int userId, String fullName, String gender, String address) {
+        String query = "UPDATE Users SET full_name = ?, gender = ?, address = ? WHERE user_id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, fullName);
+            ps.setString(2, gender);
+            ps.setString(3, address);
+            ps.setInt(4, userId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /* test
     public static void main(String[] args) {
         UserDAO dao = new UserDAO();
         
-        // Test thử với tài khoản mẫu trong DB
+        System.out.println("----- TEST LOGIN -----");
         Person p = dao.login("doctor1", "123");
+        Person p2 = dao.login("doctor2", "123");
+        Person p3 = dao.login("doctor3", "123");
         
         if(p != null) {
-            System.out.println("Đăng nhập thành công!");
-            System.out.println("Xin chào: " + p.getFullName());
+            System.out.println("Login OK! Welcome: " + p.getFullName());
             
-            // Kiểm tra xem p đang là class nào
-            if(p instanceof Doctor) {
-                System.out.println("Role: Bác sĩ");
+            // Kiểm tra kiểu thực tế (Runtime Type)
+            if (p instanceof Doctor) {
+                Doctor d = (Doctor) p; // Down-casting
+                System.out.println("Role: Doctor - : " + d.getSpecialization());
+            } else if (p instanceof Customer) {
+                System.out.println("Role: Customer");
             }
         } else {
-            System.out.println("Đăng nhập thất bại!");
+            System.out.println("Login Failed!");
         }
     }
+*/
 }

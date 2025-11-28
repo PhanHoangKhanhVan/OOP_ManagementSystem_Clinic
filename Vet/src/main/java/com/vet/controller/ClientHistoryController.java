@@ -22,13 +22,13 @@ public class ClientHistoryController extends HttpServlet {
         HttpSession session = request.getSession();
         Person acc = (Person) session.getAttribute("acc");
         
-        // Nếu chưa đăng nhập thì đuổi về
+        // yêu cầu đăng nhập
         if (acc == null) {
             response.sendRedirect("../login");
             return;
         }
 
-        // Gọi DAO lấy lịch sử của CHÍNH NGƯỜI ĐÓ (acc.getId())
+        // Gọi DAO lấy lịch sử của client 
         AppointmentDAO dao = new AppointmentDAO();
         List<Appointment> historyList = dao.getHistory(acc.getId());
         
